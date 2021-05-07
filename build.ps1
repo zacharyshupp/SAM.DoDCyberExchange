@@ -83,10 +83,11 @@ $moduleParams = @{
 	ModuleName       = "SAM.DoDCyberExchange"
 	Guid             = "bf75592f-82c7-4170-ab11-2e5425bc62b2"
 	Author           = "Zachary Shupp"
-	Description      = "PowerShell Module with useful functions."
+	Description      = "SAM.DoDCyberExchange is a PowerShell module to interact with DoD Cyber Exchange."
 	ProjectUri       = "https://github.com/zacharyshupp/SAM.DoDCyberExchange"
-	LicenseUri       = "https://github.com/zacharyshupp/SAM.DoDCyberExchange/blob/main/LICENSE.md"
-	Tags             = @('SAM')
+	LicenseUri       = "https://github.com/zacharyshupp/SAM.DoDCyberExchange/blob/main/LICENSE"
+	IconUri          = "https://github.com/zacharyshupp/SAM.DoDCyberExchange/blob/main/Docs/Images/cyber-exchange.png"
+	Tags             = @('SAM', 'DISA', 'STIG')
 	FormatsToProcess = @()
 }
 

@@ -123,6 +123,7 @@ Add-BuildTask BuildModule {
         Rootmodule        = "$($moduleParams.ModuleName).psm1"
         ModuleVersion     = $gitVersion.MajorMinorPatch
         LicenseUri        = $moduleParams.LicenseUri
+        IconUri           = $moduleParams.IconUri
         ProjectUri        = $moduleParams.ProjectUri
         Tags              = $moduleParams.Tags
     }
