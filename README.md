@@ -1,5 +1,7 @@
 # SAM.DoDCyberExchange
 
+[![Minimum Supported PowerShell Version](https://img.shields.io/badge/PowerShell-5.1+-blue.svg)](https://github.com/PowerShell/PowerShell)
+
 SAM.DoDCyberExchange is a PowerShell module to interact with DoD Cyber Exchange.
 
 | Function                     | Description                                                                                                                              |
