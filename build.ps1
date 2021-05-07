@@ -86,7 +86,7 @@ $moduleParams = @{
 	Description      = "SAM.DoDCyberExchange is a PowerShell module to interact with DoD Cyber Exchange."
 	ProjectUri       = "https://github.com/zacharyshupp/SAM.DoDCyberExchange"
 	LicenseUri       = "https://github.com/zacharyshupp/SAM.DoDCyberExchange/blob/main/LICENSE"
-	IconUri          = "https://github.com/zacharyshupp/SAM.DoDCyberExchange/blob/main/Docs/Images/cyber-exchange.png"
+	IconUri          = "https://github.com/zacharyshupp/SAM.DoDCyberExchange/blob/19f570601d6fa17d9beef359f47f34c5b6216c06/Docs/Images/cyber-exchange.png?raw=true"
 	Tags             = @('SAM', 'DISA', 'STIG')
 	FormatsToProcess = @()
 }
