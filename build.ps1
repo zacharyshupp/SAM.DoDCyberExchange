@@ -37,6 +37,7 @@ param (
 		"Clean",
 		"GenerateMarkdownHelp",
 		"NewFunction",
+		"SetEnvironment",
         "Test"
     )]
 	[string[]]
