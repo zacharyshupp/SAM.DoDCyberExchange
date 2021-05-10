@@ -33,7 +33,7 @@ function Get-CEItem {
 	[OutputType([System.Management.Automation.PSCustomObject])]
 	param (
 
-		# Specify the Cyber.Mil Site Section to retrieve file list from. The default value is 'DocumentLibrary' which is the main list of items to download. Other options are "SCAPs","STIGTools","Compilations","GPOs","Automation","CCI","Sunset".
+		# Specifies the Cyber.Mil Site Section to retrieve file list from. The default value is 'DocumentLibrary' which is the main list of items to download. Other options are "SCAPs","STIGTools","Compilations","GPOs","Automation","CCI","Sunset".
 		[Parameter()]
 		[ValidateSet(
             "DocumentLibrary",
@@ -46,7 +46,12 @@ function Get-CEItem {
             "Sunset"
 		)]
 		[String]
-		$Section = 'DocumentLibrary'
+		$Section = 'DocumentLibrary',
+
+        # Skips certificate validation checks. This includes all validations such as expiration, revocation, trusted root authority, etc. Using this parameter is not secure and is not recommended. This switch is only intended to be used against known hosts using a self-signed certificate for testing purposes or a trusted website with an expired certificate. Use at your own risk.
+        [Parameter()]
+        [Switch]
+        $SkipCertificateCheck
 
 	)
 
@@ -58,53 +63,79 @@ function Get-CEItem {
 
 	end {
 
-		$url = $DoDCyberExchangeUrls.$Section
+        try{
 
-		$response = Invoke-WebRequest -Uri $url -ErrorAction Stop -SkipCertificateCheck
+            $params = @{
+                URI         = $DoDCyberExchangeUrls.$Section
+                Method      = 'Get'
+                ErrorAction = 'Stop'
+            }
 
-        if ($response.StatusCode -eq '200') {
+            if ($PSBoundParameters.SkipCertificateCheck) {
 
-            $htmlDoc = New-Object HtmlAgilityPack.HtmlDocument
-
-            $htmlDoc.LoadHtml($response.rawcontent)
-
-            $htmlDoc.DocumentNode.SelectNodes('//tr[@class="file"]') | ForEach-Object {
-
-                [XML]$list = $($_.OuterHtml -replace "&mdash;|&nbsp;")
-                [String]$uri = ""
-                [String]$fileType = ""
-                [String]$fileName = ""
-                [String]$msg = ""
-
-                $link = $list.SelectNodes("//td[@class='title_column']").A.href
-                $size = $list.SelectNodes("//td[@class='size_column']").'#Text'
-
-                # When looking through list it was found that some items that dont have downloads, have a message nested in the title.
-                if ($link) {
-                    $uri = $link.Trim()
-                    $fileType = $($link -split "/")[-1].Split('.')[-1]
-                    $fileName = $($link -split "/")[-1]
+                if ($PSVersionTable.PSVersion.Major -gt 5) {
+                    $params.Add('SkipCertificateCheck', $true)
                 }
                 else {
-                    $msg = $list.SelectNodes("//td[@class='title_column']").div."#text".Trim()
-                }
-
-                [PSCustomObject]@{
-                    Name      = $list.SelectNodes("//td[@class='title_column']/span[@style='display:none;']").'#text'.Trim()
-                    URI       = $uri
-                    FileName  = $fileName
-                    FileType  = $fileType
-                    Size      = $(If ($size.Length -gt "0") { $size.trim() }else { "---" })
-                    Published = $list.SelectNodes("//td[@class='updated_column']").div."#text"
-                    Message   = $msg
+                    Add-Type $certCallback
+                    [ServerCertificateValidationCallback]::Ignore()
                 }
 
             }
 
-        }
-        else {
+            Write-Verbose "Retrieving list from: $($params.URI)"
 
-            Throw $response.StatusCode
+            $response = Invoke-WebRequest @params
+
+            if ($response.StatusCode -eq '200') {
+
+                $htmlDoc = New-Object HtmlAgilityPack.HtmlDocument
+
+                $htmlDoc.LoadHtml($response.rawcontent)
+
+                $htmlDoc.DocumentNode.SelectNodes('//tr[@class="file"]') | ForEach-Object {
+
+                    [XML]$list = $($_.OuterHtml -replace "&mdash;|&nbsp;")
+                    [String]$uri = ""
+                    [String]$fileType = ""
+                    [String]$fileName = ""
+                    [String]$msg = ""
+
+                    $link = $list.SelectNodes("//td[@class='title_column']").A.href
+                    $size = $list.SelectNodes("//td[@class='size_column']").'#Text'
+
+                    # When looking through list it was found that some items that dont have downloads, have a message nested in the title.
+                    if ($link) {
+                        $uri = $link.Trim()
+                        $fileType = $($link -split "/")[-1].Split('.')[-1]
+                        $fileName = $($link -split "/")[-1]
+                    }
+                    else {
+                        $msg = $list.SelectNodes("//td[@class='title_column']").div."#text".Trim()
+                    }
+
+                    [PSCustomObject]@{
+                        Name      = $list.SelectNodes("//td[@class='title_column']/span[@style='display:none;']").'#text'.Trim()
+                        URI       = $uri
+                        FileName  = $fileName
+                        FileType  = $fileType
+                        Size      = $(If ($size.Length -gt "0") { $size.trim() }else { "---" })
+                        Published = $list.SelectNodes("//td[@class='updated_column']").div."#text"
+                        Message   = $msg
+                    }
+
+                }
+
+            }
+            else {
+
+                Throw $response.StatusCode
+
+            }
+
+        }catch{
+
+            Throw $_
 
         }
 
