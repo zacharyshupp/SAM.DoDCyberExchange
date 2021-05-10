@@ -11,5 +11,10 @@ BeforeAll {
 
 Describe "Get-CECompilation" {
 
-}
+	It "Should return a single Compilation" {
+		$item = Get-CECompilation -SkipCertificateCheck
+		$item.count | Should -eq 1
+		$item.FileName.ToLower() | Should -Match "^u_srg-stig_library"
+	}
 
+}
