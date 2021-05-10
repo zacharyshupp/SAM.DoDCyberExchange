@@ -12,7 +12,7 @@ BeforeAll {
 Describe "Get-CEStig" {
 
 	It "Should return a list of files" {
-		$item = Get-CEStig
+		$item = Get-CEStig -SkipCertificateCheck
 		$item.FileName.ToLower() | Should -Match "^u_"
 	}
 

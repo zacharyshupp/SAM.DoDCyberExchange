@@ -12,42 +12,42 @@ BeforeAll {
 Describe "Get-CEItem" {
 
 	It "Should be able to query the Document Library section" {
-		$links = Get-CEItem
+		$links = Get-CEItem -SkipCertificateCheck
 		$links | Should -Not -BeNullOrEmpty
 	}
 
 	It "Should be able to query the GPO section" {
-		$links = Get-CEItem -Section GPOs
+		$links = Get-CEItem -Section GPOs -SkipCertificateCheck
 		$links | Should -Not -BeNullOrEmpty
 	}
 
 	It "Should be able to query the SCAP section" {
-		$links = Get-CEItem -Section SCAPs
+		$links = Get-CEItem -Section SCAPs -SkipCertificateCheck
 		$links | Should -Not -BeNullOrEmpty
 	}
 
 	It "Should be able to query the STIG/SRG Tools section" {
-		$links = Get-CEItem -Section STIGTools
+		$links = Get-CEItem -Section STIGTools -SkipCertificateCheck
 		$links | Should -Not -BeNullOrEmpty
 	}
 
 	It "Should be able to query the Compilations section" {
-		$links = Get-CEItem -Section Compilations
+		$links = Get-CEItem -Section Compilations -SkipCertificateCheck
 		$links | Should -Not -BeNullOrEmpty
 	}
 
 	It "Should be able to query the Automation section" {
-		$links = Get-CEItem -Section Automation
+		$links = Get-CEItem -Section Automation -SkipCertificateCheck
 		$links | Should -Not -BeNullOrEmpty
 	}
 
 	It "Should be able to query the CCI section" {
-		$links = Get-CEItem -Section CCI
+		$links = Get-CEItem -Section CCI -SkipCertificateCheck
 		$links | Should -Not -BeNullOrEmpty
 	}
 
 	It "Should be able to query the Sunset section" {
-		$links = Get-CEItem -Section Sunset
+		$links = Get-CEItem -Section Sunset -SkipCertificateCheck
 		$links | Should -Not -BeNullOrEmpty
 	}
 

@@ -12,7 +12,7 @@ BeforeAll {
 Describe "Get-CEScapBenchmark" {
 
 	It "Should return only Benchmark files" {
-		$item = Get-CEScapBenchmark
+		$item = Get-CEScapBenchmark -SkipCertificateCheck
 		$item.FileName.ToLower() | Should -Match "_(B|b)enchmark.zip"
 	}
 

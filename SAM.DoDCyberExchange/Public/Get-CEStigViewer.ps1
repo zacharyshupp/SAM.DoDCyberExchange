@@ -40,14 +40,23 @@ function Get-CEStigViewer {
 		# Specify if the user guides should be downloaded as well.
 		[Parameter()]
 		[Switch]
-		$IncludeUserGuide
+		$IncludeUserGuide,
+
+		# Skips certificate validation checks. This includes all validations such as expiration, revocation, trusted root authority, etc. Using this parameter is not secure and is not recommended. This switch is only intended to be used against known hosts using a self-signed certificate for testing purposes or a trusted website with an expired certificate. Use at your own risk.
+		[Parameter()]
+		[Switch]
+		$SkipCertificateCheck
 
 	)
 
 	end {
 
 		$items = @()
-		$files = Get-CEItem -Section STIGTools
+
+		$params = @{ Section = 'STIGTools' }
+		if ($PSBoundParameters.SkipCertificateCheck) { $params.add('SkipCertificateCheck', $true) }
+
+		$files = Get-CEItem @params
 
 		switch ($Type) {
 			"Java"    { $items += $files | Where-Object { $_.FileName -match "U_STIGViewer_\d{1,2}-\d{1,2}.zip" }}

@@ -30,7 +30,12 @@ function Save-CEItem {
 		# Specifies the URL for the file to download from public.cyber.mil
 		[Parameter(Mandatory, ValueFromPipelineByPropertyName)]
 		[string[]]
-		$URI
+		$URI,
+
+		# Skips certificate validation checks. This includes all validations such as expiration, revocation, trusted root authority, etc. Using this parameter is not secure and is not recommended. This switch is only intended to be used against known hosts using a self-signed certificate for testing purposes or a trusted website with an expired certificate. Use at your own risk.
+		[Parameter()]
+		[Switch]
+		$SkipCertificateCheck
 
 	)
 
@@ -50,7 +55,14 @@ function Save-CEItem {
 			$fileName = ($_ -split "/")[-1]
 			$saveTo = Join-Path -Path $Destination -ChildPath $fileName
 
-			Invoke-WebRequest -Uri $_ -OutFile $saveTo -SkipCertificateCheck
+			$params = @{
+				URI = $_
+				OutFiel = $saveTo
+			}
+
+			if ($PSBoundParameters.SkipCertificateCheck) { $params.add('SkipCertificateCheck', $true) }
+
+			Invoke-WebRequest @params
 
 		}
 

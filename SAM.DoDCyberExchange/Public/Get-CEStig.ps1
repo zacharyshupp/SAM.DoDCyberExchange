@@ -15,17 +15,24 @@ function Get-CEStig {
 
 	[CmdletBinding()]
 	[OutputType([System.Management.Automation.PSCustomObject])]
-	param ()
+	param (
 
-	begin {
+		# Skips certificate validation checks. This includes all validations such as expiration, revocation, trusted root authority, etc. Using this parameter is not secure and is not recommended. This switch is only intended to be used against known hosts using a self-signed certificate for testing purposes or a trusted website with an expired certificate. Use at your own risk.
+		[Parameter()]
+		[Switch]
+		$SkipCertificateCheck
 
-		$exclude = "UNIX_Remote_Scanning|RPM-GPG-KEY|scc-|Draft|Overview|BENCHMARK|STIGViewer|STIGApplicabilityGuide|CCI|Library|Ansible|GPO|Configuration_Files|Audit|Chef|Test"
-
-	}
+	)
 
 	end {
 
-		Get-CEItem -Section DocumentLibrary |
+		$exclude = "UNIX_Remote_Scanning|RPM-GPG-KEY|scc-|Draft|Overview|BENCHMARK|STIGViewer|STIGApplicabilityGuide|CCI|Library|Ansible|GPO|Configuration_Files|Audit|Chef|Test"
+
+		$params = @{ Section = 'DocumentLibrary' }
+
+		if ($PSBoundParameters.SkipCertificateCheck) { $params.add('SkipCertificateCheck', $true) }
+
+		Get-CEItem @params |
 			Where-Object { $_.FileName -and $_.FileName.ToLower() -notmatch $exclude.ToLower() -and $_.FileType -eq "zip" }
 
 	}

@@ -15,10 +15,22 @@ function Get-CECompilation {
 
 	[CmdletBinding()]
 	[OutputType([System.Management.Automation.PSCustomObject])]
-	param ()
+	param (
+
+		# Skips certificate validation checks. This includes all validations such as expiration, revocation, trusted root authority, etc. Using this parameter is not secure and is not recommended. This switch is only intended to be used against known hosts using a self-signed certificate for testing purposes or a trusted website with an expired certificate. Use at your own risk.
+		[Parameter()]
+		[Switch]
+		$SkipCertificateCheck
+
+	)
 
 	end {
-		Get-CEItem -Section Compilations | Where-Object { $_.FileName -and $_.FileType -eq "zip" }
+
+		$params = @{ Section = 'Compilations' }
+
+		if ($PSBoundParameters.SkipCertificateCheck) { $params.add('SkipCertificateCheck', $true) }
+
+		Get-CEItem @params | Where-Object { $_.FileName -and $_.FileType -eq "zip" }
 	}
 
 }

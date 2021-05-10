@@ -37,14 +37,24 @@ function Get-CEComplianceChecker {
 		[Parameter()]
 		[ValidateSet('UnlockerBundle', 'Checksums', 'UnixRemoteScanningPlugin', 'ReleaseNotes', 'Readme', 'RPM-GPG-KEY', 'All')]
 		[String[]]
-		$OtherFiles
+		$OtherFiles,
+
+		# Skips certificate validation checks. This includes all validations such as expiration, revocation, trusted root authority, etc. Using this parameter is not secure and is not recommended. This switch is only intended to be used against known hosts using a self-signed certificate for testing purposes or a trusted website with an expired certificate. Use at your own risk.
+		[Parameter()]
+		[Switch]
+		$SkipCertificateCheck
 
 	)
 
 	begin {
 
 		$items = @()
-		$files = Get-CEItem -Section SCAPs
+
+		$params = @{ Section = 'SCAPs' }
+
+		if ($PSBoundParameters.SkipCertificateCheck) { $params.add('SkipCertificateCheck', $true) }
+
+		$files = Get-CEItem @params
 
 	}
 
