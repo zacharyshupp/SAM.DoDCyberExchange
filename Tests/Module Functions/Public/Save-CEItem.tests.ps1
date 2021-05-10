@@ -11,5 +11,13 @@ BeforeAll {
 
 Describe "Save-CEItem" {
 
-}
+	It "Should save a file" {
+		$item = Get-CEComplianceChecker -OtherFiles Readme -SkipCertificateCheck
+		$item | Save-CEItem -Destination $TestDrive -SkipCertificateCheck
 
+		$filePath = Join-Path -Path $TestDrive -ChildPath $item.FileName
+
+		Test-Path -Path $filePath | Should -be $true
+	}
+
+}

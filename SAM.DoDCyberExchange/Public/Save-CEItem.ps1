@@ -56,8 +56,8 @@ function Save-CEItem {
 			$saveTo = Join-Path -Path $Destination -ChildPath $fileName
 
 			$params = @{
-				URI = $_
-				OutFiel = $saveTo
+				URI     = $_
+				OutFile = $saveTo
 			}
 
 			if ($PSBoundParameters.SkipCertificateCheck) { $params.add('SkipCertificateCheck', $true) }
