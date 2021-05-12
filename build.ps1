@@ -1,4 +1,4 @@
-<#
+﻿<#
 	.SYNOPSIS
 		Module Build wrapper for SAM.DoDCyberExchange
 
@@ -92,29 +92,29 @@ $moduleParams = @{
 }
 
 # Project Directories
-$prjRoot = $PSScriptRoot
-$prjBuildPath = Join-Path -Path $prjRoot -ChildPath "Build"
-$prjTemplatePath = Join-Path -Path $prjBuildPath -ChildPath "Templates"
-$prjBuildOutputPath = Join-Path -Path $prjRoot -ChildPath "BuildOutput"
-$prjBuildDependenciesPath = Join-Path -Path $prjRoot -ChildPath "BuildDependencies"
-$prjDocsPath = Join-Path -Path $prjRoot -ChildPath "Docs"
-$prjDocsModulePath = Join-Path -Path $prjDocsPath -ChildPath "ModuleHelp"
-$prjSourcePath = Join-Path -Path $prjRoot -ChildPath $moduleParams.ModuleName
-$prjLibPath = Join-Path -Path $prjSourcePath -ChildPath "Libraries"
-$prjTestPath = Join-Path -Path $prjRoot -ChildPath "Tests"
-$prjDotNetPath = Join-Path -Path $prjRoot -ChildPath ".config"
+[string]$prjRoot = $PSScriptRoot
+[string]$prjBuildPath = Join-Path -Path $prjRoot -ChildPath "Build"
+[string]$prjTemplatePath = Join-Path -Path $prjBuildPath -ChildPath "Templates"
+[string]$prjBuildOutputPath = Join-Path -Path $prjRoot -ChildPath "BuildOutput"
+[string]$prjBuildDependenciesPath = Join-Path -Path $prjRoot -ChildPath "BuildDependencies"
+[string]$prjDocsPath = Join-Path -Path $prjRoot -ChildPath "Docs"
+[string]$prjDocsModulePath = Join-Path -Path $prjDocsPath -ChildPath "ModuleHelp"
+[string]$prjSourcePath = Join-Path -Path $prjRoot -ChildPath $moduleParams.ModuleName
+[string]$prjLibPath = Join-Path -Path $prjSourcePath -ChildPath "Libraries"
+[string]$prjTestPath = Join-Path -Path $prjRoot -ChildPath "Tests"
+[string]$prjDotNetPath = Join-Path -Path $prjRoot -ChildPath ".config"
 
 # Project Files
-$prjBuildTaskPath = Join-Path -Path $prjBuildPath -ChildPath "build.tasks.ps1"
-$prjScriptAnalyzerPath = Join-Path -Path $prjBuildPath -ChildPath "PSScriptAnalyzerSettings.psd1"
-$prjBuildFunctionsPath = Join-Path -Path $prjBuildPath -ChildPath "build.functions.ps1"
-$prjDotNetConfigPath = Join-Path -Path $prjDotNetPath -ChildPath "dotnet-tools.json"
-$prjModuleMarkdownPath = Join-Path -Path $prjDocsPath -ChildPath "$($moduleParams.ModuleName)`.md"
+[string]$prjBuildTaskPath = Join-Path -Path $prjBuildPath -ChildPath "build.tasks.ps1"
+[string]$prjScriptAnalyzerPath = Join-Path -Path $prjBuildPath -ChildPath "PSScriptAnalyzerSettings.psd1"
+[string]$prjBuildFunctionsPath = Join-Path -Path $prjBuildPath -ChildPath "build.functions.ps1"
+[string]$prjDotNetConfigPath = Join-Path -Path $prjDotNetPath -ChildPath "dotnet-tools.json"
+[string]$prjModuleMarkdownPath = Join-Path -Path $prjDocsPath -ChildPath "$($moduleParams.ModuleName)`.md"
 
 # Module Build Variables
-$mdlPath = Join-Path -Path $prjBuildOutputPath -ChildPath $moduleParams.ModuleName
-$mdlPSM1Path = Join-Path -Path $mdlPath -ChildPath "$($moduleParams.ModuleName)`.psm1"
-$mdlPSD1Path = Join-Path -Path $mdlPath -ChildPath "$($moduleParams.ModuleName)`.psd1"
+[string]$mdlPath = Join-Path -Path $prjBuildOutputPath -ChildPath $moduleParams.ModuleName
+[string]$mdlPSM1Path = Join-Path -Path $mdlPath -ChildPath "$($moduleParams.ModuleName)`.psm1"
+[string]$mdlPSD1Path = Join-Path -Path $mdlPath -ChildPath "$($moduleParams.ModuleName)`.psd1"
 
 # [Execution] -----------------------------------------------------------------------------------------------------
 

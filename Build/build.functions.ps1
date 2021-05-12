@@ -48,7 +48,9 @@ function Get-CommitsSinceLastTag {
 			$logItem = $PSItem.Split('||')
 
 			foreach ($commitTypeItem in $commitTypes) {
-				if ($($logItem[1].trim()) -match $commitTypeItem.Regex) {
+
+
+				if ($($logItem[1]) -match $commitTypeItem.Regex) {
 					$commitType = $commitTypeItem.Name
 					break
 				}

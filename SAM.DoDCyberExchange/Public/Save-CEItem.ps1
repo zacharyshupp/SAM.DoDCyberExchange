@@ -60,7 +60,17 @@ function Save-CEItem {
 				OutFile = $saveTo
 			}
 
-			if ($PSBoundParameters.SkipCertificateCheck) { $params.add('SkipCertificateCheck', $true) }
+            if ($PSBoundParameters.SkipCertificateCheck) {
+
+                if ($PSVersionTable.PSVersion.Major -gt 5) {
+                    $params.Add('SkipCertificateCheck', $true)
+                }
+                else {
+                    Add-Type $certCallback
+                    [ServerCertificateValidationCallback]::Ignore()
+                }
+
+            }
 
 			Invoke-WebRequest @params
 

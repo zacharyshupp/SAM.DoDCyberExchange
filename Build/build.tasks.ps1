@@ -1,4 +1,4 @@
-# [InvokeBuild Configuration] -------------------------------------------------------------------------------------
+﻿# [InvokeBuild Configuration] -------------------------------------------------------------------------------------
 
 Set-BuildHeader {
     param($Path)
@@ -27,7 +27,7 @@ Enter-Build {
 # [Tasks] ---------------------------------------------------------------------------------------------------------
 
 # Synopsis: Alias Task for Build
-Add-BuildTask Build Clean, SetEnvironment, BuildModule
+Add-BuildTask Build SetEnvironment, Clean, BuildModule
 
 # Synopsis: Run PSScriptAnalyzer
 Add-BuildTask Analyze SetEnvironment, {
@@ -128,13 +128,11 @@ Add-BuildTask BuildModule {
         Tags              = $moduleParams.Tags
     }
 
-    if ($gitVersion.PreReleaseTag) { $moduleManifestParams.add('Prerelease', $gitVersion.NuGetPreReleaseTagV2) }
-    if ($releaseNotes) { $moduleManifestParams.add('ReleaseNotes', $releaseNotes) }
-
-    # Copy Formats
-    if ($moduleParams.FormatsToProcess) {
-        # TODO: Add a way to copy multiple in order.
+    if ($gitVersion.PreReleaseTag -and $PSVersionTable.PSVersion.Major -ge 7) {
+        $moduleManifestParams.add('Prerelease', $gitVersion.NuGetPreReleaseTagV2)
     }
+
+    if ($releaseNotes) { $moduleManifestParams.add('ReleaseNotes', $releaseNotes) }
 
     # Create Module Manifest
     New-ModuleManifest @moduleManifestParams
@@ -146,7 +144,7 @@ Add-BuildTask BuildModule {
 # Synopsis: Clean up the target build directory
 Add-BuildTask Clean {
 
-    if ($(Test-Path -Path $prjBuildOutputPath) -eq $true) { Remove-Item –Path $prjBuildOutputPath –Recurse -Force }
+    if (Test-Path -Path $prjBuildOutputPath) { Remove-Item –Path $prjBuildOutputPath –Recurse -Force }
 
 }
 
@@ -264,18 +262,15 @@ Add-BuildTask Test SetEnvironment, {
 
         $configuration.Run.Path = $prjTestPath
         $configuration.Run.Exit = $true
-        $configuration.Run.PassThru = $true
+        $configuration.Run.Throw = $true
 
         $configuration.TestResult.Enabled = $true
         $configuration.TestResult.OutputPath = $prjTestResultPath
 
         $configuration.output.Verbosity = 'Detailed'
 
-        $r = Invoke-Pester -Configuration $configuration
+        Invoke-Pester -Configuration $configuration
 
-        if ("Failed" -eq $r.Result) { throw "Run failed!" }
-
-        ""
     }
     else {
 

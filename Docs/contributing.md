@@ -4,6 +4,8 @@ Contributions are welcome via pull requests and issues. Before submitting a pull
 
 ## Environment Configuration
 
+When building you must use PowerShell 7.x
+
 ``` PowerShell
 # First time execution
 # Install requirements and Run the build task

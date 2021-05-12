@@ -19,6 +19,10 @@
     "powershell.scriptAnalysis.enable": true,
     "powershell.developer.bundledModulesPath": "${cwd}/BuildDependencies",
     "powershell.pester.useLegacyCodeLens": false,
+    "[powershell]": {
+        "files.encoding": "utf8bom",
+        "files.autoGuessEncoding": true
+    },
 
     //todo-tree
     "todo-tree.general.statusBar": "current file",

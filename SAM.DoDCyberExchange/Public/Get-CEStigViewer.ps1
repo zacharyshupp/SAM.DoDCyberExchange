@@ -54,6 +54,7 @@ function Get-CEStigViewer {
 		$items = @()
 
 		$params = @{ Section = 'STIGTools' }
+
 		if ($PSBoundParameters.SkipCertificateCheck) { $params.add('SkipCertificateCheck', $true) }
 
 		$files = Get-CEItem @params
@@ -67,7 +68,7 @@ function Get-CEStigViewer {
 		}
 
 		if ($IncludeUserGuide) {
-			$items += $files | Where-Object { $_.FileName -match "U_STIG_Viewer_2-x_User_Guide_V\d{1,2}R\d{1,2}.pdf" }
+			$items += $files | Where-Object { $_.FileName -match "U_STIG_Viewer_\d{1,2}-x_User_Guide_V\d{1,2}R\d{1,2}.pdf" }
 		}
 
 		Write-Output $items
