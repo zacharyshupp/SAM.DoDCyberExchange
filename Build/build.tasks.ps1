@@ -294,9 +294,6 @@ Add-BuildTask GenerateMarkdownHelp build, {
         Import-Module $platyModulePath -Global -ErrorAction Stop
     }
 
-    # Get Module Version from GitVersion
-    $gitVersion = dotnet dotnet-gitversion | ConvertFrom-Json
-
     # Check if module is already loaded and remove it
     Get-Module $moduleParams.ModuleName | Remove-Module -Force
 
