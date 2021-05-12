@@ -58,7 +58,7 @@ function Get-CommitsSinceLastTag {
 
 			[PSCustomObject]@{
 				CommitId   = $logItem[0]
-				Message    = $logItem[1].trim()
+				Message    = $(if($logItem[1].length -gt 1){$logItem[1].trim()})
 				CommitType = $commitType
 			}
 

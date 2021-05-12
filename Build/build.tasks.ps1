@@ -264,6 +264,7 @@ Add-BuildTask Test SetEnvironment, {
 
         $configuration.Run.Path = $prjTestPath
         $configuration.Run.Exit = $true
+        $configuration.Run.PassThru = $true
 
         $configuration.TestResult.Enabled = $true
         $configuration.TestResult.OutputPath = $prjTestResultPath
