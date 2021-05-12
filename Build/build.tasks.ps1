@@ -69,7 +69,7 @@ Add-BuildTask BuildModule {
     }
 
     # Retrieve module variables if it exists
-    $sourceVarPath = Join-Path -Path $prjSourcePath -ChildPath "$($moduleParams.ModuleName).variables.ps1"
+    $sourceVarPath = Join-Path -Path $prjSourcePath -ChildPath "$($moduleParams.ModuleName).Variables.ps1"
 
     if ((Test-Path -Path $sourceVarPath) -eq $true) { Get-Content -Path $sourceVarPath | Out-File @outParams }
 
